@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mydevlog.domain.Post;
 import com.mydevlog.repository.PostRepository;
 import com.mydevlog.request.PostCreate;
+import com.mydevlog.request.PostEdit;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,8 +21,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -175,5 +175,47 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.length()", Matchers.is(10)))
                 .andExpect(jsonPath("$[0].id").value(30))
                 .andDo(print());
+    }
+
+    @Test
+    @DisplayName("글 제목 수정")
+    void test7() throws Exception {
+        //given
+        Post post = Post.builder().title("호돌맨 제목 ")
+                .content("내용!!!")
+                .build();
+        postRepository.save(post);
+
+        PostEdit postEdit = PostEdit.builder().title("호돌맨 제목 ")
+                .content("내용 수정").build();
+
+        ObjectMapper objectMapper = new ObjectMapper(); // 객체 json화 해주는 java 라이브러리
+        String json = objectMapper.writeValueAsString(postEdit);
+
+        //when
+        mockMvc.perform(patch("/posts/{postId}", post.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("게시글 삭제")
+    void test8() throws Exception {
+        //given
+        Post post = Post.builder().title("호돌맨 제목 ")
+                .content("내용!!!")
+                .build();
+        postRepository.save(post);
+
+        //when
+        mockMvc.perform(delete("/posts/{postId}", post.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print());
+
+        //then
+        assertEquals(0L, postRepository.count());
     }
 }

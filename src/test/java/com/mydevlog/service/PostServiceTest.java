@@ -3,6 +3,7 @@ package com.mydevlog.service;
 import com.mydevlog.domain.Post;
 import com.mydevlog.repository.PostRepository;
 import com.mydevlog.request.PostCreate;
+import com.mydevlog.request.PostEdit;
 import com.mydevlog.request.PostSearch;
 import com.mydevlog.response.PostResponse;
 import org.junit.jupiter.api.Assertions;
@@ -86,5 +87,64 @@ class PostServiceTest {
         Assertions.assertNotNull(posts);
         assertEquals(10L, posts.size());
         assertEquals("호돌맨 제목 19", posts.get(0).getTitle());
+    }
+
+    @Test
+    @DisplayName("글 제목 수정")
+    void test4() {
+        // given
+        Post post = Post.builder().title("호돌맨 제목 ")
+                .content("내용!!!")
+                .build();
+        postRepository.save(post);
+
+        PostEdit postEdit = PostEdit.builder().title("호돌맨 수정").content("내용!!!").build();
+
+        // when
+        postService.edit(post.getId(), postEdit);
+
+        // then
+        Post findPost = postRepository.findById(post.getId())
+                .orElseThrow(() -> new RuntimeException("글이 존재하지 않습니다. id=" + post.getId()));
+        assertEquals(postEdit.getTitle(), findPost.getTitle());
+        assertEquals(postEdit.getContent(), findPost.getContent());
+    }
+
+    @Test
+    @DisplayName("글 내용 수정")
+    void test5() {
+        // given
+        Post post = Post.builder().title("호돌맨 제목 ")
+                .content("내용!!!")
+                .build();
+        postRepository.save(post);
+
+        PostEdit postEdit = PostEdit.builder().title("호돌맨 제목 ")
+                .content("내용 수정").build();
+
+        // when
+        postService.edit(post.getId(), postEdit);
+
+        // then
+        Post findPost = postRepository.findById(post.getId())
+                .orElseThrow(() -> new RuntimeException("글이 존재하지 않습니다. id=" + post.getId()));
+        assertEquals(postEdit.getTitle(), findPost.getTitle());
+        assertEquals(postEdit.getContent(), findPost.getContent());
+    }
+
+    @Test
+    @DisplayName("게시글 삭제")
+    void test6() {
+        // given
+        Post post = Post.builder().title("호돌맨 제목 ")
+                .content("내용!!!")
+                .build();
+        postRepository.save(post);
+
+        // when
+        postService.delete(post.getId());
+
+        // then
+        assertEquals(0, postRepository.count());
     }
 }

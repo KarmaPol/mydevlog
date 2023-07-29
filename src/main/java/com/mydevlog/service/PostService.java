@@ -3,6 +3,7 @@ package com.mydevlog.service;
 import com.mydevlog.domain.Post;
 import com.mydevlog.repository.PostRepository;
 import com.mydevlog.request.PostCreate;
+import com.mydevlog.request.PostEdit;
 import com.mydevlog.request.PostSearch;
 import com.mydevlog.response.PostResponse;
 import lombok.RequiredArgsConstructor;
@@ -36,5 +37,22 @@ public class PostService {
         return postRepository.getList(postSearch).stream()
                 .map(PostResponse::new)
                 .collect(Collectors.toList());
+    }
+
+    public PostResponse edit(Long id, PostEdit postEdit) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글입니다."));
+
+        post.change(postEdit.getTitle(), postEdit.getContent());
+
+        Post save = postRepository.save(post);
+        return new PostResponse(save);
+    }
+
+    public void delete(Long id){
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글입니다."));
+
+        postRepository.delete(post);
     }
 }

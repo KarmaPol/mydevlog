@@ -2,6 +2,7 @@ package com.mydevlog.controller;
 
 import com.mydevlog.domain.Post;
 import com.mydevlog.request.PostCreate;
+import com.mydevlog.request.PostEdit;
 import com.mydevlog.request.PostSearch;
 import com.mydevlog.response.PostResponse;
 import com.mydevlog.service.PostService;
@@ -32,5 +33,15 @@ public class PostController {
     @GetMapping("/posts")
     public List<PostResponse> getList(@ModelAttribute PostSearch postSearch) {
         return postService.getList(postSearch);
+    }
+
+    @PatchMapping("/posts/{id}")
+    public PostResponse edit(@PathVariable Long id, @RequestBody @Valid PostEdit request){
+        return postService.edit(id, request);
+    }
+
+    @DeleteMapping("/posts/{id}")
+    public void delete(@PathVariable Long id){
+        postService.delete(id);
     }
 }

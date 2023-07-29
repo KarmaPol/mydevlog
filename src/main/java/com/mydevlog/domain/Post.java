@@ -1,9 +1,6 @@
 package com.mydevlog.domain;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -25,5 +22,10 @@ public class Post {
     public Post(String title, String content) {
         this.title = title;
         this.content = content;
+    }
+
+    public void change(String title, String content){
+        this.title = title == null ? this.title : title;
+        this.content = content == null ? this.content : content;
     }
 }
