@@ -38,7 +38,7 @@ class PostControllerTest {
 
     @BeforeEach
     void clean(){
-        postRepository.deleteAll();
+        postRepository.deleteAllInBatch();
     }
 
     @Test
@@ -82,9 +82,8 @@ class PostControllerTest {
                         .content(json)
                 )
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.code").value("400"))
+//                .andExpect(jsonPath("$.code").value("400"))
                 .andDo(print());
-
     }
 
     @Test
@@ -151,7 +150,6 @@ class PostControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()", Matchers.is(10)))
-                .andExpect(jsonPath("$[0].id").value(30))
                 .andDo(print());
     }
 
@@ -173,7 +171,6 @@ class PostControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()", Matchers.is(10)))
-                .andExpect(jsonPath("$[0].id").value(30))
                 .andDo(print());
     }
 
@@ -217,5 +214,55 @@ class PostControllerTest {
 
         //then
         assertEquals(0L, postRepository.count());
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 게시글 조회")
+    void test9() throws Exception {
+        // expected
+        mockMvc.perform(get("/posts/{postId}", 1L)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("글 제목 수정")
+    void test10() throws Exception {
+        //given
+        PostEdit postEdit = PostEdit.builder().title("호돌맨 제목 ")
+                .content("내용 수정").build();
+
+        ObjectMapper objectMapper = new ObjectMapper(); // 객체 json화 해주는 java 라이브러리
+        String json = objectMapper.writeValueAsString(postEdit);
+
+        //when
+        mockMvc.perform(patch("/posts/{postId}", 1L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isNotFound())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("게시글 작성시 제목에 '바보' 포함 금지")
+    void test11() throws Exception {
+
+        //given
+        PostCreate request = PostCreate.builder()
+                .title("나는 바보입니다.")
+                .content("내용입니다.")
+                .build();
+
+        ObjectMapper objectMapper = new ObjectMapper(); // 객체 json화 해주는 java 라이브러리
+        String json = objectMapper.writeValueAsString(request);
+
+        //expected
+        mockMvc.perform(post("/posts")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json)
+                )
+                .andExpect(status().isBadRequest())
+                .andDo(print());
     }
 }

@@ -1,6 +1,7 @@
 package com.mydevlog.service;
 
 import com.mydevlog.domain.Post;
+import com.mydevlog.exception.PostNotFound;
 import com.mydevlog.repository.PostRepository;
 import com.mydevlog.request.PostCreate;
 import com.mydevlog.request.PostEdit;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 class PostServiceTest {
@@ -146,5 +148,68 @@ class PostServiceTest {
 
         // then
         assertEquals(0, postRepository.count());
+    }
+
+    @Test
+    @DisplayName("잘못된 ID로 게시글 조회")
+    void tes7() {
+        // given
+        PostCreate postCreate = PostCreate.builder().title("제목입니다.").content("내용입니다.").build();
+        Post postResponse = postService.write(postCreate);
+
+        // when
+
+        // then
+        assertThrows(PostNotFound.class, ()-> postService.get(postResponse.getId() + 1));
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 글 삭제")
+    void test8() {
+        // given
+        Post post = Post.builder().title("호돌맨 제목 ")
+                .content("내용!!!")
+                .build();
+        postRepository.save(post);
+
+        // when
+
+        // then
+        assertThrows(PostNotFound.class, ()-> postService.delete(post.getId() + 1));
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 글 수정")
+    void test9() {
+        // given
+        Post post = Post.builder().title("호돌맨 제목 ")
+                .content("내용!!!")
+                .build();
+        postRepository.save(post);
+
+        PostEdit postEdit = PostEdit.builder().title("호돌맨 수정").content("내용!!!").build();
+
+        // when
+
+        // then
+        assertThrows(PostNotFound.class, ()-> postService.edit(post.getId() + 1, postEdit));
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 글 내용 수정")
+    void test10() {
+        // given
+        Post post = Post.builder().title("호돌맨 제목 ")
+                .content("내용!!!")
+                .build();
+        postRepository.save(post);
+
+        PostEdit postEdit = PostEdit.builder().title("호돌맨 제목 ")
+                .content("내용 수정").build();
+
+        // when
+
+        // then
+        assertThrows(PostNotFound.class, ()-> postService.edit(post.getId() + 1, postEdit));
     }
 }
