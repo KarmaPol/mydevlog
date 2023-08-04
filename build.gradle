@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '2.7.14'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id "org.asciidoctor.jvm.convert" version "3.3.2"
 }
 
 group = 'com.mydevlog'
@@ -15,6 +16,12 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+
+    asciidoctorExt
+}
+
+ext {
+    snippetsDir = file('build/generated-snippets')
 }
 
 repositories {
@@ -25,6 +32,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // REST DOCS
+    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor:2.0.7.RELEASE'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc:2.0.7.RELEASE'
 
     // QueryDsl
     implementation 'com.querydsl:querydsl-core'
@@ -47,4 +58,22 @@ clean {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+test {
+    outputs.dir snippetsDir
+}
+
+asciidoctor {
+    inputs.dir snippetsDir
+    configurations 'asciidoctorExt'
+    dependsOn test
+}
+
+bootJar {
+    dependsOn asciidoctor
+    copy {
+        from asciidoctor.outputDir
+        into "src/main/resources/static/docs"
+    }
 }

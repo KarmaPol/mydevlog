@@ -1,0 +1,32 @@
+= myDevLog API
+:toc:
+
+== 글 단건조회
+
+=== 요청
+include::{snippets}/post-inquery/http-request.adoc[]
+
+include::{snippets}/post-inquery/path-parameters.adoc[]
+
+=== 응답
+include::{snippets}/post-inquery/http-response.adoc[]
+
+include::{snippets}/post-inquery/response-fields.adoc[]
+
+=== curl
+include::{snippets}/post-inquery/curl-request.adoc[]
+
+== 글 작성
+
+=== 요청
+include::{snippets}/post-create/http-request.adoc[]
+
+include::{snippets}/post-create/request-fields.adoc[]
+
+=== 응답
+include::{snippets}/post-create/http-response.adoc[]
+
+include::{snippets}/post-create/response-fields.adoc[]
+
+=== curl
+include::{snippets}/post-create/curl-request.adoc[]
