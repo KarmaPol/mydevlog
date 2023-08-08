@@ -1,9 +1,5 @@
 ### 로그인
 
-POST http://localhost:8080/auth/login
+GET http://localhost:8080/foo
 Content-Type: application/json
-
-{
-  "email": "kkh98@gmail.com",
-  "password" : "12345"
-}
+Cookie: SESSION=5f24f769-ac0c-4237-97f0-26d337effae2
