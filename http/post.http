@@ -1,5 +1,5 @@
 ### 테스트 요청
 
-POST http://localhost:8080/test
+GET http://localhost:8080/foo
 Content-Type: application/json
-Authorization: 12345
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIn0.nGcRZ4sJd94e02Ze8iT6o3VKn_VZzzsmI-75CPf1k3Y

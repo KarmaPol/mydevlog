@@ -1,6 +1,5 @@
 package com.mydevlog.service;
 
-import com.mydevlog.domain.Session;
 import com.mydevlog.domain.Users;
 import com.mydevlog.exception.WrongSigningInformation;
 import com.mydevlog.repository.UserRepository;
@@ -16,11 +15,10 @@ public class AuthService {
 
     private final UserRepository userRepository;
 
-    public String signin(Login login){
+    public Long signin(Login login){
         Users users = userRepository.findByEmailAndPassword(login.getEmail(), login.getPassword())
                 .orElseThrow(() -> new WrongSigningInformation());
 
-        Session session = users.addSession();
-        return session.getAccessToken();
+        return users.getId();
     }
 }

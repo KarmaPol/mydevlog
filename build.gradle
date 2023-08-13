@@ -50,6 +50,16 @@ dependencies {
     runtimeOnly 'com.h2database:h2'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // JJWT
+//    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+//    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+//    //'org.bouncycastle:bcprov-jdk15on:1.70',
+//    'io.jsonwebtoken:jjwt-jackson:0.11.5' // or 'io.jsonwebtoken:jjwt-gson:0.11.5' for gson
+
+    implementation("io.jsonwebtoken:jjwt-api:0.11.2")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.2")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.2")
 }
 
 clean {
