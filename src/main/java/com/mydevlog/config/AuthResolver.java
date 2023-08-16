@@ -9,7 +9,6 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -21,6 +20,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 public class AuthResolver implements HandlerMethodArgumentResolver {
 
     private final SessionRepository sessionRepository;
+    private final Appconfig appconfig;
     private final static String KEY = "VjScEchv0aitUOcPxmPMlKmGL6XtZMP4tQtsCHFtpPg=";
 
     // parameter에 특정 클래스 있다면 resolve Argument 실행
@@ -40,7 +40,7 @@ public class AuthResolver implements HandlerMethodArgumentResolver {
 
         try {
             Jws<Claims> claims = Jwts.parserBuilder()
-                    .setSigningKey(Base64.decodeBase64(KEY))
+                    .setSigningKey(appconfig.getJwtKey())
                     .build()
                     .parseClaimsJws(jws);
             String userID = claims.getBody().getSubject();

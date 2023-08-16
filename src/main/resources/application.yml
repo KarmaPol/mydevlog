@@ -18,3 +18,9 @@ spring:
 
   jpa:
     defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
+
+mydevlog:
+  jwt-key: VjScEchv0aitUOcPxmPMlKmGL6XtZMP4tQtsCHFtpPg=
