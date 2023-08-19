@@ -2,9 +2,7 @@ package com.mydevlog.service;
 
 import com.mydevlog.domain.Users;
 import com.mydevlog.exception.AlreadyExistsEmailException;
-import com.mydevlog.exception.WrongSigningInformation;
 import com.mydevlog.repository.UserRepository;
-import com.mydevlog.request.Login;
 import com.mydevlog.request.Signup;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -78,44 +76,4 @@ class AuthServiceTest {
         assertNotNull(user.getPassword());
     }
 
-    @Test
-    @DisplayName("로그인 테스트")
-    void test3(){
-        // given
-        Signup signup = Signup.builder()
-                .email("kim@gmail.com")
-                .password("1234")
-                .name("kimkyunghun")
-                .build();
-        authService.signup(signup);
-
-        Login login = Login.builder().email("kim@gmail.com").password("1234").build();
-
-        // when
-        authService.signin(login);
-
-        // then
-        Assertions.assertEquals(userRepository.count(), 1L);
-
-        Users user = userRepository.findAll().iterator().next();
-        assertEquals(user.getEmail(), "kim@gmail.com");
-        assertNotNull(user.getPassword());
-    }
-
-    @Test
-    @DisplayName("로그인 비밀번호 틀림")
-    void test4(){
-        // given
-        Signup signup = Signup.builder()
-                .email("kim@gmail.com")
-                .password("1234")
-                .name("kimkyunghun")
-                .build();
-        authService.signup(signup);
-
-        Login login = Login.builder().email("kim@gmail.com").password("12354").build();
-
-        // expected
-        Assertions.assertThrows(WrongSigningInformation.class, () -> authService.signin(login));
-    }
 }

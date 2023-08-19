@@ -5,10 +5,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -22,17 +23,6 @@ public class Users {
     private String email;
     private String password;
     private LocalDateTime createAt;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private List<Session> sessions = new ArrayList<>();
-
-    public Session addSession(){
-        Session session = Session.builder()
-                .user(this)
-                .build();
-        sessions.add(session);
-        return session;
-    }
 
     @Builder
     public Users(String name, String email, String password) {

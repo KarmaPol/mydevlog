@@ -1,6 +1,5 @@
 package com.mydevlog.controller;
 
-import com.mydevlog.config.data.UserSession;
 import com.mydevlog.domain.Post;
 import com.mydevlog.request.PostCreate;
 import com.mydevlog.request.PostEdit;
@@ -20,11 +19,6 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
-
-    @GetMapping("/foo")
-    public Long foo(UserSession userSession){
-        return userSession.id;
-    }
 
     @PostMapping("/posts")
     public Post post(@RequestBody @Valid PostCreate request) {

@@ -2,7 +2,6 @@ package com.mydevlog.crypto;
 
 import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 
-
 public class PasswordEncoder {
 
     private static final SCryptPasswordEncoder sCryptPasswordEncoder = new SCryptPasswordEncoder();
