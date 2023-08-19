@@ -7,6 +7,7 @@ import com.mydevlog.repository.PostRepository;
 import com.mydevlog.repository.SessionRepository;
 import com.mydevlog.repository.UserRepository;
 import com.mydevlog.request.Login;
+import com.mydevlog.request.Signup;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -113,5 +114,23 @@ class AuthControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.accessToken", Matchers.notNullValue()));
+    }
+
+    @Test
+    @DisplayName("회원가입")
+    void test6() throws Exception {
+
+        // given
+        Signup signup = Signup.builder()
+                .email("kim@gmail.com")
+                .password("1234")
+                .name("kimkyunghun")
+                .build();
+
+        // expected
+        mockMvc.perform(post("/auth/signup")
+                        .content(objectMapper.writeValueAsString(signup))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 }

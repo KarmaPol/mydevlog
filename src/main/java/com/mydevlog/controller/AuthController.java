@@ -2,6 +2,7 @@ package com.mydevlog.controller;
 
 import com.mydevlog.config.Appconfig;
 import com.mydevlog.request.Login;
+import com.mydevlog.request.Signup;
 import com.mydevlog.response.SessionResponse;
 import com.mydevlog.service.AuthService;
 import io.jsonwebtoken.Jwts;
@@ -41,4 +42,10 @@ public class AuthController {
 
         return new SessionResponse(jws);
     }
+
+    @PostMapping("/auth/signup")
+    public void signup(@RequestBody Signup signup){
+        authService.signup(signup);
+    }
+
 }
