@@ -2,7 +2,7 @@ package com.mydevlog.request;
 
 import lombok.*;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 @Getter
 @NoArgsConstructor
 @ToString

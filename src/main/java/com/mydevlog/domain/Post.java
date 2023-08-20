@@ -2,7 +2,7 @@ package com.mydevlog.domain;
 
 import lombok.*;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Getter
