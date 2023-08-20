@@ -1,9 +1,20 @@
 ### 로그인
 
 POST http://localhost:8080/auth/login
+Content-Type: application/x-www-form-urlencoded
+
+username=mydevlog@gmail.com&password=1234
+
+### 회원가입
+POST http://localhost:8080/auth/signup
 Content-Type: application/json
 
 {
-  "email" : "hi@gmail",
-  "password": "123145"
+  "name": "kim",
+  "email" : "mydevlog@gmail.com",
+  "password": "1234"
 }
+
+### 메인페이지
+
+GET http://localhost:8080

@@ -21,6 +21,14 @@ spring:
   sql:
     init:
       mode: always
+  session:
+    timeout: 86400
 
 mydevlog:
   jwt-key: VjScEchv0aitUOcPxmPMlKmGL6XtZMP4tQtsCHFtpPg=
+
+server:
+  servlet:
+    session:
+      cookie:
+        max-age: 172800
