@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -87,6 +88,9 @@ class PostControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "mydevlog@gmail.com",
+    roles = {"ADMIN"},
+    password = "1234")
     @DisplayName("/posts 요청시 DB에 값이 저장된다")
     void test3() throws Exception {
         //given
